@@ -3,6 +3,7 @@ package com.curso.javaspringboot.entitys;
 import java.io.Serializable;
 import java.util.Date;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,17 +21,19 @@ import lombok.Setter;
 @Entity
 @Table(name="Clientes")
 public class Cliente  implements Serializable{
-    @NonNull
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NonNull
+    
+    @Column(nullable = false)
     private String nombre;
-    @NonNull
+    
+    @Column(nullable = false)
     private String apellido;
-    @NonNull
+    @Column(nullable = false,unique = true)
     private String email;
-    @NonNull
+    
     @Temporal(TemporalType.DATE)
     private Date fecha;
     
