@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.curso.javaspringboot.services.ApiError;
 
+
 public class CustomExceptionHandler  extends ResponseEntityExceptionHandler {
  @SuppressWarnings("null")
 @ExceptionHandler({ Exception.class })
