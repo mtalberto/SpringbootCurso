@@ -1,6 +1,6 @@
 package com.curso.javaspringboot.controllers;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +11,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,7 +64,9 @@ public class ClienteRestController {
 		// capturar el error del id
 		if (cliente == null) {
 			response.put("mensaje", "El cliente ID :".concat(id.toString().concat("no existe en la base de datos")));
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+		//	return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
+				//otra solucion
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("fallo");
 		}
 		return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
 
@@ -124,7 +126,7 @@ public class ClienteRestController {
 
 	@PutMapping("/clientes/{id}")
 	public ResponseEntity<?> update(@Valid @RequestBody Cliente cliente, BindingResult result,@PathVariable Long id) {
-		Cliente clienteSinActualizar = clienteService.findById(id);
+		Cliente clienteParaActualizar = clienteService.findById(id);
 		Cliente clienteActualizado = null;
 
 		Map<String, Object> response = new HashMap<>();
@@ -142,18 +144,18 @@ public class ClienteRestController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.BAD_REQUEST);
 		}
 
-		if (clienteSinActualizar == null) {
+		if (clienteParaActualizar == null) {
 			response.put("mensaje", "Error no se pudo editar, el cliente ID "
 					.concat(id.toString().concat(" no existe en la base de datos")));
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 
 		try {
-			clienteSinActualizar.setApellido(cliente.getApellido());
-			clienteSinActualizar.setEmail(cliente.getEmail());
-			clienteSinActualizar.setNombre(cliente.getNombre());
+			clienteParaActualizar.setApellido(cliente.getApellido());
+			clienteParaActualizar.setEmail(cliente.getEmail());
+			clienteParaActualizar.setNombre(cliente.getNombre());
 
-			clienteActualizado = clienteService.save(clienteSinActualizar);
+			clienteActualizado = clienteService.save(clienteParaActualizar);
 
 		} catch (DataAccessException e) {
 			response.put("mensaje", "error al actualizar el cliente en la base de datos");

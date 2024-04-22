@@ -15,30 +15,34 @@ import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
 @Entity
 @Table(name="Clientes")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Cliente  implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @NotEmpty
+    @NotEmpty(message="no puede estar vacio")
     @Size(min=4 , max=20)
     @Column(nullable = false)
     private String nombre;
     
-    @NotEmpty
+    @NotEmpty(message = "no puede estar vacio")
     @Size(min = 4, max=20)
     @Column(nullable = false)
     private String apellido;
 
-    @NotEmpty
+    @NotEmpty(message = "no puede estar vacio")
     @Email
     @Column(nullable = false,unique = true)
     private String email;
